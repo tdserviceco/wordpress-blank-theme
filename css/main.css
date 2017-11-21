@@ -1,0 +1,9 @@
+/* BASE */
+@import "base/normalize.css";
+@import "base/core.css";
+
+/* Components */
+@import "components/hero.css";
+@import "components/slider.css";
+
+/* 3rd party css */
