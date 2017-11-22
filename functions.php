@@ -46,27 +46,25 @@ class name_theme_setup {
 		}
   }
 
- static function my_acf_json_save_point( $path ) {
-  // update path
-  $path = get_stylesheet_directory() . '/acf-json';
-  // return
-  return $path;
- }
+  static function my_acf_json_save_point( $path ) {
+    // update path
+    $path = get_template_directory_uri() . '/acf-json';
+    
+    // return
+    return $path;
+  }
 
- static function my_acf_json_load_point( $paths ) {
-  
-  // remove original path (optional)
-  unset($paths[0]);
-  
-  
-  // append path
-  $paths[] = get_stylesheet_directory() . '/acf-json';
-  
-  
-  // return
-  return $paths;
-  
-}
+  static function my_acf_json_load_point( $paths ) {
+    
+    // remove original path (optional)
+    unset($paths[0]);
+    
+    // append path
+    $paths[] = get_template_directory_uri() . '/acf-json';
+    
+    // return
+    return $paths; 
+  }
 
 
   static function theme_support() {
