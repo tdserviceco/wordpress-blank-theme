@@ -19,7 +19,7 @@ class name_theme_setup {
   }
 
   static function add_ajax_script() {
-    echo '<script type="text/javascript">var ajaxurl = "' . admin_url( 'admin-ajax.php' ) . '";</script>';
+    echo '<script type="text/javascript">let ajaxurl = "' . admin_url( 'admin-ajax.php' ) . '";</script>';
   }
 
   static function add_menu() {
