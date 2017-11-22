@@ -1,5 +1,5 @@
 <?php
 get_header();
-   echo "im index";
+  // silence is golden
 get_footer();
 ?>
