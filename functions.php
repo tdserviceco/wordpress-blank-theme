@@ -22,10 +22,6 @@ class name_theme_setup {
     echo '<script type="text/javascript">var ajaxurl = "' . admin_url( 'admin-ajax.php' ) . '";</script>';
   }
 
-  static function image_sizes() {
-
-  }
-
   static function add_menu() {
 		register_nav_menu( 'header', __( 'Header Menu' ) );
 	}
