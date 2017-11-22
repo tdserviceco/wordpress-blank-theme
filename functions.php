@@ -1,7 +1,109 @@
 <?php
-add_action( 'wp_enqueue_scripts', 'markups' ); 
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+  exit;
+}
 
-function markups() {
+class name_theme_setup {
+  static function hooks() {
+    add_action( 'wp_enqueue_scripts', array(__CLASS__, 'scripts') ); 
+    add_action( 'after_setup_theme', array(__CLASS__, 'load_theme_textdomain') );
+    add_action( 'wp_footer', array(__CLASS__, 'add_ajax_script') );
+    add_action( 'after_setup_theme', array( __CLASS__, 'theme_support' ) );
+    add_action( 'after_setup_theme', array( __CLASS__, 'option_menu' ), 15, 1 );
+  }
+  
+  static function scripts() {
     wp_enqueue_style( 'main', get_template_directory_uri() . '/css/main.css');
     wp_enqueue_script( 'main', get_template_directory_uri() . '/js/main.js' , array('jquery') , true );
+  }
+
+  static function add_ajax_script() {
+    echo '<script type="text/javascript">var ajaxurl = "' . admin_url( 'admin-ajax.php' ) . '";</script>';
+  }
+
+  static function image_sizes() {
+
+  }
+
+  static function add_menu() {
+		register_nav_menu( 'header', __( 'Header Menu' ) );
+	}
+
+  static function load_theme_textdomain() {
+		load_theme_textdomain( 'name_theme', get_template_directory() . '/languages' );
+  }
+  
+	static function option_menu() {
+    if ( function_exists( 'acf_add_options_page' ) ) 
+    {
+			acf_add_options_page( 
+        array(
+          'page_title' => __( 'Theme Options', 'name_theme' ),
+          'menu_title' => __( 'Theme Options', 'name_theme' ),
+          'menu_slug'  => 'theme_master',
+        ) 
+      );
+		}
+  }
+
+  static function theme_support() {
+		$html5 = array(
+			'search-form',
+			'comment-form',
+			'comment-list',
+			'gallery',
+			'caption'
+		);
+		add_theme_support( 'post-formats', $html5 );
+		add_theme_support( 'post-thumbnails' );
+		add_theme_support( 'automatic-feed-links' );
+    add_theme_support( 'title-tag' );
+    
+    //Image sizes
+    add_image_size('hero', 1800, 800, false);
+    add_image_size('thumbnail-small', 80, 80, true);
+    add_image_size('avartar-big', 300, 300, true);
+    add_image_size('avartar-small', 150, 150, true);
+	}
 }
+
+class name_theme_security extends name_theme_setup {
+  static function security_check() {
+		parent::hooks();
+		add_action( 'init', array( __CLASS__, 'disable_stuff' ) );
+	}
+
+  static function disable_stuff() {
+    //Disable Emoji, Move to optimization snippet...
+    remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
+    remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
+    remove_action( 'wp_print_styles', 'print_emoji_styles' );
+    remove_action( 'admin_print_styles', 'print_emoji_styles' );
+    remove_filter( 'the_content_feed', 'wp_staticize_emoji' );
+    remove_filter( 'comment_text_rss', 'wp_staticize_emoji' );
+    remove_filter( 'wp_mail', 'wp_staticize_emoji_for_email' );
+
+    //Disable WLW, unless Windows Live Writer is used.
+    remove_action( 'wp_head', 'wlwmanifest_link' );
+    remove_action( 'wp_head', 'rsd_link' );
+
+    //Disable XML RPC
+    add_filter( 'xmlrpc_enabled', '__return_false' );
+
+    //Disable feed, unless Comment Feeds are used.
+    add_action( 'do_feed', 'wp_die', 1 );
+    add_action( 'do_feed_rdf', 'wp_die', 1 );
+    add_action( 'do_feed_rss', 'wp_die', 1 );
+    add_action( 'do_feed_rss2', 'wp_die', 1 );
+    add_action( 'do_feed_atom', 'wp_die', 1 );
+  }
+}
+
+class name_theme extends name_theme_security {
+  static function startup() {
+    parent::security_check();
+  }
+}
+
+name_theme::startup();
