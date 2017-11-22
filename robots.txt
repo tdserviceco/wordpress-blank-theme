@@ -1,0 +1,9 @@
+Disallow: /feed/
+Disallow: /trackback/
+Disallow: /wp-admin/
+Disallow: /wp-content/
+Disallow: /wp-includes/
+Disallow: /xmlrpc.php
+Allow: /wp-content/uploads/
+Allow: /wp-content/plugins/
+Allow: /wp-content/themes/
