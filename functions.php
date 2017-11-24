@@ -116,6 +116,12 @@ class name_theme_security extends name_theme_setup {
     remove_filter( 'the_content', 'wpautop' ); 
     remove_filter( 'the_excerpt', 'wpautop' );
 
+
+    //Remove extra spacing in WYSIWYG
+    remove_filter( 'the_content', 'wpautop' ); 
+    remove_filter( 'the_excerpt', 'wpautop' );
+
+    
     //Disable feed, unless Comment Feeds are used.
     add_action( 'do_feed', 'wp_die', 1 );
     add_action( 'do_feed_rdf', 'wp_die', 1 );
