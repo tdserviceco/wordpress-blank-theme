@@ -12,8 +12,32 @@ class name_theme_setup {
     add_action( 'after_setup_theme', array( __CLASS__, 'theme_support' ) );
     add_action( 'after_setup_theme', array( __CLASS__, 'option_menu' ), 15, 1 );
     add_action( 'init', array( __CLASS__, 'add_menu' ) );
+    add_filter( 'acf/settings/load_json', array( __CLASS__, 'acf_json_load_point' ) );
+    add_filter('acf/settings/save_json', array( __CLASS__, 'my_acf_json_save_point' ) );
   }
   
+
+  static function my_acf_json_save_point( $path ) {
+    
+    // update path
+    $path = get_stylesheet_directory() . '/acf-json';
+    
+    // return
+    return $path;
+    
+}
+
+  static function acf_json_load_point( $paths ) {
+   // remove original path (optional)
+   unset($paths[0]);
+        
+   // append path
+   $paths[] = get_stylesheet_directory() . '/acf-json';
+        
+   // return
+   return $paths;
+  }
+
   static function scripts() {
     wp_enqueue_style( 'main', get_template_directory_uri() . '/css/main.css');
     wp_enqueue_script( 'main', get_template_directory_uri() . '/js/main.js' , array('jquery') , true );
