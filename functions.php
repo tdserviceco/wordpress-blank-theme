@@ -86,6 +86,10 @@ class name_theme_setup {
     add_image_size('thumbnail-small', 80, 80, true);
     add_image_size('avartar-big', 300, 300, true);
     add_image_size('avartar-small', 150, 150, true);
+    add_image_size('favicon-large', 180, 180, false);
+    add_image_size('favicon-medium', 32, 32, false);
+    add_image_size('favicon-small', 16, 16, false);
+
 	}
 }
 
@@ -116,12 +120,6 @@ class name_theme_security extends name_theme_setup {
     remove_filter( 'the_content', 'wpautop' ); 
     remove_filter( 'the_excerpt', 'wpautop' );
 
-
-    //Remove extra spacing in WYSIWYG
-    remove_filter( 'the_content', 'wpautop' ); 
-    remove_filter( 'the_excerpt', 'wpautop' );
-
-    
     //Disable feed, unless Comment Feeds are used.
     add_action( 'do_feed', 'wp_die', 1 );
     add_action( 'do_feed_rdf', 'wp_die', 1 );
@@ -138,3 +136,13 @@ class name_theme extends name_theme_security {
 }
 
 name_theme::startup();
+
+class name_theme_custom_rules {
+  static function wp_menu($args = []) {
+    $args = [
+      'theme_location' => 'header', 
+      'container' => 'nav'
+    ];
+    wp_nav_menu($args);
+  }
+}
