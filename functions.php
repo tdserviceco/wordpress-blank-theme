@@ -14,18 +14,21 @@ class name_theme_setup {
     add_action( 'init', array( __CLASS__, 'add_menu' ) );
     add_filter( 'acf/settings/load_json', array( __CLASS__, 'acf_json_load_point' ) );
     add_filter('acf/settings/save_json', array( __CLASS__, 'my_acf_json_save_point' ) );
+    add_filter('upload_mimes', array( __CLASS__, 'cc_mime_types' ) );
   }
   
+  static function cc_mime_types($mimes) {
+    $mimes['svg'] = 'image/svg+xml';
+    return $mimes;
+  }
 
   static function my_acf_json_save_point( $path ) {
-    
     // update path
     $path = get_stylesheet_directory() . '/acf-json';
     
     // return
-    return $path;
-    
-}
+    return $path;  
+  }
 
   static function acf_json_load_point( $paths ) {
    // remove original path (optional)
