@@ -1,9 +1,11 @@
 /* BASE */
 @import "base/normalize.css";
 @import "base/core.css";
+@import "base/responsive.css";
 
 /* Components */
 @import "components/hero.css";
+@import "components/navigation.css";
 @import "components/slider.css";
 
 /* 3rd party css */
